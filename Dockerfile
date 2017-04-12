@@ -16,11 +16,11 @@ RUN apt-get install -y bison build-essential curl flex git gnupg gperf libesd0-d
 RUN apt-get install -y g++-multilib gcc-multilib lib32ncurses5-dev lib32readline6-dev lib32z1-dev
 
 # Install additional packages which are useful for building Android
-RUN apt-get install -y ccache sudo 
+RUN apt-get install -y ccache sudo imagemagick
 
 # Create user build
 RUN mkdir /build
-RUN useradd build -d /build && rsync -a /etc/skel/ /home/build/
+RUN useradd build -d /build
 
 # Add repo function
 RUN mkdir /build/bin
