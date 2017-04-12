@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo $PATH
+source /etc/bash.bashrc
+echo $PATH
+
 # Initialize ccache if needed
 if [ ! -f /srv/ccache/ccache.conf ] && [ $ccache ]; then
 	echo "Initializing ccache in /srv/ccache..."
