@@ -23,9 +23,8 @@ RUN mkdir /build
 RUN useradd build -d /build
 
 # Add repo function
-RUN mkdir /build/bin
-RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /build/bin/repo
-RUN chmod a+x /build/bin/repo
+RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
+RUN chmod a+x /bin/repo
 
 # Add sudo permission
 RUN echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build
@@ -36,10 +35,6 @@ RUN chmod a+x /build/startup.sh
 
 # Fix ownership
 RUN chown -R build:build /build
-
-# Set global variables
-ADD android-env-vars.sh /etc/android-env-vars.sh
-RUN echo "source /etc/android-env-vars.sh" >> /etc/bash.bashrc
 
 VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
 

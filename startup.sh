@@ -1,15 +1,17 @@
 #!/bin/bash
 
-echo $PATH
-cat /etc/bash.bashrc
-cat /etc/android-env-vars.sh
-source /etc/bash.bashrc
-echo $PATH
+# Allocate 4 gigs to jack
+export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
 # Initialize ccache if needed
-if [ ! -f /srv/ccache/ccache.conf ] && [ $ccache ]; then
-	echo "Initializing ccache in /srv/ccache..."
-	CCACHE_DIR=/srv/ccache ccache -M $ccache
+if [ $ccache ]; then
+    echo "Enabling ccache..."
+    export USE_CCACHE=1
+    export CCACHE_DIR=/srv/ccache
+    if [ ! -f /srv/ccache/ccache.conf ]; then
+            echo "Initializing ccache in /srv/ccache..."
+            export CCACHE_DIR=/srv/ccache ccache -M $ccache
+    fi
 fi
 
 # Initialize repository if needed
