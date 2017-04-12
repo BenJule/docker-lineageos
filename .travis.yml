@@ -1,0 +1,11 @@
+sudo: required
+services:
+    - docker
+language: bash
+script:
+    - docker build . -t marceloneil/docker-lineageos
+    - >
+        if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+            docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+            docker push marceloneil/docker-lineageos
+        fi

@@ -1,7 +1,7 @@
 # Build environment for LineageOS
 
 FROM ubuntu:16.04
-MAINTAINER Michael Stucki <michael@stucki.io>
+MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -40,8 +40,7 @@ RUN chown -R build:build /home/build
 ADD android-env-vars.sh /etc/android-env-vars.sh
 RUN echo "source /etc/android-env-vars.sh" >> /etc/bash.bashrc
 
-VOLUME /home/build/android
-VOLUME /srv/ccache
+VOLUME ["/home/build/android", "/home/build/zips", "/home/build/.android-certs", "/srv/ccache"]
 
 CMD /home/build/startup.sh
 
