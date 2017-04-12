@@ -1,6 +1,8 @@
 #!/bin/bash
 
 echo $PATH
+cat /etc/bash.bashrc
+cat /etc/android-env-vars.sh
 source /etc/bash.bashrc
 echo $PATH
 
