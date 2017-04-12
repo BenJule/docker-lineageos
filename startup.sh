@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Allocate 4 gigs to jack
+# Allocate 4 gigabytes of RAM to jack
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
 # Initialize ccache if needed
