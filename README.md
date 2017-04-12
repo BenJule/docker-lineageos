@@ -1,4 +1,4 @@
-docker-lineageos
+docker-lineageos [![Build Status](https://travis-ci.org/marceloneil/docker-lineageos.svg?branch=master)](https://travis-ci.org/marceloneil/docker-lineageos)
 ==================
 
 Create a [Docker] based environment to build [LineageOS].

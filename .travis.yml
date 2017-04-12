@@ -3,9 +3,9 @@ services:
     - docker
 language: bash
 script:
-    - docker build . -t marceloneil/docker-lineageos
+    - docker build . -t $TRAVIS_REPO_SLUG
     - >
         if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
             docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-            docker push marceloneil/docker-lineageos
+            docker push $TRAVIS_REPO_SLUG
         fi

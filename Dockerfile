@@ -16,33 +16,34 @@ RUN apt-get install -y bison build-essential curl flex git gnupg gperf libesd0-d
 RUN apt-get install -y g++-multilib gcc-multilib lib32ncurses5-dev lib32readline6-dev lib32z1-dev
 
 # Install additional packages which are useful for building Android
-RUN apt-get install -y ccache rsync tig sudo imagemagick
-RUN apt-get install -y android-tools-adb android-tools-fastboot
-RUN apt-get install -y bc bsdmainutils file screen
-RUN apt-get install -y bash-completion wget nano
+RUN apt-get install -y ccache sudo 
 
-RUN useradd build && rsync -a /etc/skel/ /home/build/
+# Create user build
+RUN mkdir /build
+RUN useradd build -d /build && rsync -a /etc/skel/ /home/build/
 
-RUN mkdir /home/build/bin
-RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /home/build/bin/repo
-RUN chmod a+x /home/build/bin/repo
+# Add repo function
+RUN mkdir /build/bin
+RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /build/bin/repo
+RUN chmod a+x /build/bin/repo
 
 # Add sudo permission
 RUN echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build
 
-ADD startup.sh /home/build/startup.sh
-RUN chmod a+x /home/build/startup.sh
+# Add startup script
+ADD startup.sh /build/startup.sh
+RUN chmod a+x /build/startup.sh
 
 # Fix ownership
-RUN chown -R build:build /home/build
+RUN chown -R build:build /build
 
 # Set global variables
 ADD android-env-vars.sh /etc/android-env-vars.sh
 RUN echo "source /etc/android-env-vars.sh" >> /etc/bash.bashrc
 
-VOLUME ["/home/build/android", "/home/build/zips", "/home/build/.android-certs", "/srv/ccache"]
+VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
 
-CMD /home/build/startup.sh
+CMD /build/startup.sh
 
 USER build
-WORKDIR /home/build/android
+WORKDIR /build/android
