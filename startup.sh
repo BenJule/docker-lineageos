@@ -4,13 +4,13 @@
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
 # Initialize ccache if needed
-if [ $ccache ]; then
+if [ $CCACHE ]; then
     echo "Enabling ccache..."
     export USE_CCACHE=1
     export CCACHE_DIR=/srv/ccache
     if [ ! -f /srv/ccache/ccache.conf ]; then
             echo "Initializing ccache in /srv/ccache..."
-            export CCACHE_DIR=/srv/ccache ccache -M $ccache
+            export CCACHE_DIR=/srv/ccache ccache -M $CCACHE
     fi
 fi
 
