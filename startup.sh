@@ -3,6 +3,9 @@
 # Allocate 4 gigabytes of RAM to jack
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4G"
 
+# Assign user
+export USER="build"
+
 # Initialize ccache if needed
 if [ $USE_CCACHE == 1 ]; then
     echo "Initializing ccache..."
@@ -26,7 +29,6 @@ for codename in $DEVICE_LIST; do
 		source build/envsetup.sh
 		breakfast $codename
 		mka target-files-package dist
-                echo "Target files generated???"
 		croot
 		./build/tools/releasetools/sign_target_files_apks -o \
 			-d /build/android-certs \
