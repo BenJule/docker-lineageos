@@ -55,6 +55,6 @@ for codename in $DEVICE_LIST; do
         source build/envsetup.sh
         make --help
         echo "Please work..."
-        make clean
+        /bin/make clean
     fi
 done
