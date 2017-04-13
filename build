@@ -47,6 +47,10 @@ for codename in $DEVICE_LIST; do
         echo "Attempting to clean..."
         echo `ls`
         echo $USER
+        cd /build/android
+        source build/envsetup.sh
+        echo `man make`
+        echo "Please work..."
         make clean
     fi
 done
