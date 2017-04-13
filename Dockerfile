@@ -36,8 +36,8 @@ RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/
 RUN chmod a+x /bin/repo
 
 # Add startup script
-ADD build /build/build
-RUN chmod a+x /build/build
+ADD build /bin/build
+RUN chmod a+x /bin/build
 
 # Fix ownership
 RUN chown -R build:build /build
