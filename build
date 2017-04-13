@@ -44,7 +44,9 @@ for codename in $DEVICE_LIST; do
             croot
             brunch oneplus3
         fi
-        cd /build/android
+        echo "Attempting to clean..."
+        echo `ls`
+        echo $USER
         make clean
     fi
 done
