@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-# TEMP: debug command
-command echo "test"
-
 # Assign user
 export USER="build"
 
