@@ -3,7 +3,13 @@
 FROM ubuntu:16.04
 MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+    JACK_RAM=4G
+    USE_CCACHE=1
+    CCACHE_SIZE=75G
+    TAG=14.1
+    TYPE=NIGHTLY
+    SIGN_BUILDS=1
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list
 RUN apt-get -qq update
@@ -22,23 +28,24 @@ RUN apt-get install -y ccache sudo imagemagick
 RUN mkdir /build
 RUN useradd build -d /build
 
-# Add repo function
-RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
-RUN chmod a+x /bin/repo
-
 # Add sudo permission
 RUN echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build
 
+# Add repo command
+RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
+RUN chmod a+x /bin/repo
+
 # Add startup script
-ADD startup.sh /build/startup.sh
-RUN chmod a+x /build/startup.sh
+ADD build /build/build
+RUN chmod a+x /build/build
 
 # Fix ownership
 RUN chown -R build:build /build
 
 VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
 
-CMD /build/startup.sh
+ENTRYPOINT /bin/bash
 
 USER build
 WORKDIR /build/android
+CMD build
