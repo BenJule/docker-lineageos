@@ -45,8 +45,8 @@ for codename in $DEVICE_LIST; do
             croot
             brunch oneplus3
         fi
-        echo $PATH
         which make
-        /usr/bin/make clean
+        make clean
+        # /usr/bin/make clean
     fi
 done
