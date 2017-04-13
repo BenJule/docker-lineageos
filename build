@@ -49,7 +49,7 @@ for codename in $DEVICE_LIST; do
         echo $USER
         cd /build/android
         source build/envsetup.sh
-        echo `man make`
+        make --help
         echo "Please work..."
         make clean
     fi
