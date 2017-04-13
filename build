@@ -21,12 +21,16 @@ if [ ! "$(ls -A)" ]; then
     repo init -u https://github.com/LineageOS/android.git -b cm-$TAG
 fi
 
+make --help
+ls /bin/ | grep "make"
+
+repo sync
+source build/envsetup.sh
+
 # The following code is in part from julianxhokaxhiu/docker-lineage-cicd
 IFS=','
 for codename in $DEVICE_LIST; do
     if [ ! -z "$codename" ]; then
-        repo sync
-        source build/envsetup.sh
         breakfast $codename
         if [ $SIGN_BUILDS == 1 ]; then
             mka target-files-package dist
