@@ -21,11 +21,8 @@ if [ ! "$(ls -A)" ]; then
     repo init -u https://github.com/LineageOS/android.git -b cm-$TAG
 fi
 
-make --help
-
 repo sync
 source build/envsetup.sh
-make --help
 
 # The following code is in part from julianxhokaxhiu/docker-lineage-cicd
 IFS=','
@@ -43,12 +40,13 @@ for codename in $DEVICE_LIST; do
                 -k /build/android-certs/releasekey \
                 --block --backup=true \
                 out/dist/signed-target_files.zip \
-                /build/zips/lineage-$TAG-`date +%Y%m%d`-$TYPE-$codename.zip
+                /build/zips/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
         elif [ $SIGN_BUILDS == 0]; then
             croot
             brunch oneplus3
         fi
         echo $PATH
-        make clean
+        which make
+        /usr/bin/make clean
     fi
 done
