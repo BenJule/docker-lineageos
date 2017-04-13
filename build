@@ -32,7 +32,7 @@ for codename in $DEVICE_LIST; do
         repo sync
         source build/envsetup.sh
         breakfast $codename
-        if [ "$SIGN_BUILDS" ]; then
+        if [ $SIGN_BUILDS == 1 ]; then
             mka target-files-package dist
             croot
             ./build/tools/releasetools/sign_target_files_apks -o \
@@ -44,10 +44,11 @@ for codename in $DEVICE_LIST; do
                 --block --backup=true \
                 out/dist/signed-target_files.zip \
                 /build/zips/lineage-$TAG-`date +%Y%m%d`-$TYPE-$codename.zip
-        else
+        elif [ $SIGN_BUILDS == 0]; then
             croot
             brunch oneplus3
         fi
+        cd /build/android
         make clean
     fi
 done
