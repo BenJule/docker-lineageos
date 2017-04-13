@@ -44,8 +44,6 @@ RUN chown -R build:build /build
 
 VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
 
-ENTRYPOINT /bin/bash
-
+CMD build
 USER build
 WORKDIR /build/android
-CMD build
