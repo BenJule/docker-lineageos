@@ -48,6 +48,7 @@ for codename in $DEVICE_LIST; do
             croot
             brunch oneplus3
         fi
+        echo $PATH
         make clean
     fi
 done
