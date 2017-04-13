@@ -3,12 +3,12 @@
 FROM ubuntu:16.04
 MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
-ENV DEBIAN_FRONTEND=noninteractive
-    JACK_RAM=4G
-    USE_CCACHE=1
-    CCACHE_SIZE=75G
-    TAG=14.1
-    TYPE=NIGHTLY
+ENV DEBIAN_FRONTEND=noninteractive \
+    JACK_RAM=4G \
+    USE_CCACHE=1 \
+    CCACHE_SIZE=75G \
+    TAG=14.1 \
+    TYPE=NIGHTLY \
     SIGN_BUILDS=1
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list
