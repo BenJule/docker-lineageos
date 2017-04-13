@@ -22,10 +22,10 @@ if [ ! "$(ls -A)" ]; then
 fi
 
 make --help
-ls /bin/ | grep "make"
 
 repo sync
 source build/envsetup.sh
+make --help
 
 # The following code is in part from julianxhokaxhiu/docker-lineage-cicd
 IFS=','
@@ -48,13 +48,6 @@ for codename in $DEVICE_LIST; do
             croot
             brunch oneplus3
         fi
-        echo "Attempting to clean..."
-        echo `ls`
-        echo $USER
-        cd /build/android
-        source build/envsetup.sh
-        make --help
-        echo "Please work..."
-        /bin/make clean
+        make clean
     fi
 done

@@ -1,5 +1,3 @@
-# Build environment for LineageOS
-
 FROM ubuntu:16.04
 MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
@@ -11,36 +9,66 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TYPE=NIGHTLY \
     SIGN_BUILDS=1
 
-RUN sed -i 's/main$/main universe/' /etc/apt/sources.list
-RUN apt-get -qq update
-RUN apt-get -qqy upgrade
+# Add binaries
+ADD build /bin/build
 
-# Install build dependencies (source: https://wiki.cyanogenmod.org/w/Build_for_bullhead)
-RUN apt-get install -y bc bison build-essential curl flex git gnupg gperf libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop maven openjdk-8-jdk pngcrush schedtool squashfs-tools xsltproc zip zlib1g-dev
+RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
+    apt-get -qq update && \
+    apt-get -qqy upgrade && \
+
+# Install build dependencies
+    apt-get install -y \
+    bc \
+    bison \
+    build-essential \
+    ccache \
+    curl \
+    flex \
+    git \
+    gnupg \
+    gperf \
+    imagemagick \
+    libesd0-dev \
+    liblz4-tool \
+    libncurses5-dev \
+    libsdl1.2-dev \
+    libwxgtk3.0-dev \
+    libxml2 \
+    libxml2-utils \
+    lzop maven \
+    openjdk-8-jdk \
+    pngcrush \
+    schedtool \
+    squashfs-tools \
+    sudo \
+    xsltproc \
+    zip \
+    zlib1g-dev && \
 
 # For 64-bit systems
-RUN apt-get install -y g++-multilib gcc-multilib lib32ncurses5-dev lib32readline6-dev lib32z1-dev
-
-# Install additional packages which are useful for building Android
-RUN apt-get install -y ccache sudo imagemagick
+    apt-get install -y \
+    g++-multilib \
+    gcc-multilib \
+    lib32ncurses5-dev \
+    lib32readline6-dev \
+    lib32z1-dev && \
 
 # Create user build
-RUN mkdir /build
-RUN useradd build -d /build
+    mkdir /build && \
+    useradd build -d /build && \
 
 # Add sudo permission
-RUN echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build
+    echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build && \
 
 # Add repo command
-RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
-RUN chmod a+x /bin/repo
+    curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && \
+    chmod a+x /bin/repo && \
 
 # Add startup script
-ADD build /bin/build
-RUN chmod a+x /bin/build
+    chmod a+x /bin/build && \
 
 # Fix ownership
-RUN chown -R build:build /build
+    chown -R build:build /build
 
 VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
 
