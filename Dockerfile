@@ -3,7 +3,7 @@ MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC"
-ENTRYPOINT ["/bin/bash -c"]
+ENTRYPOINT /bin/bash -c
 
 # Add binaries
 ADD build /bin/build
