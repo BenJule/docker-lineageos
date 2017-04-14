@@ -52,7 +52,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
 
 # Fix timezone
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata
+    dpkg-reconfigure -f noninteractive tzdata && \
 
 # Create user build
     mkdir /build && \
