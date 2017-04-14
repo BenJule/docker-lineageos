@@ -1,13 +1,9 @@
 FROM ubuntu:16.04
 MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    JACK_RAM=4G \
-    USE_CCACHE=1 \
-    CCACHE_SIZE=75G \
-    TAG=14.1 \
-    TYPE=NIGHTLY \
-    SIGN_BUILDS=1
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV TZ="Etc/UTC"
+ENTRYPOINT ["/bin/bash"]
 
 # Add binaries
 ADD build /bin/build
@@ -41,6 +37,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     schedtool \
     squashfs-tools \
     sudo \
+    tzdata \
     xsltproc \
     zip \
     zlib1g-dev && \
@@ -52,6 +49,10 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     lib32ncurses5-dev \
     lib32readline6-dev \
     lib32z1-dev && \
+
+# Fix timezone
+    ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
 
 # Create user build
     mkdir /build && \
