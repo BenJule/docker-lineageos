@@ -22,7 +22,7 @@ while [[ $# > 0 ]]; do
         -t|--tag) TAG=$2 ;;
         --type) TYPE=$2 ;;
         --sign-builds) SIGN_BUILDS=1 ;;
-        --migration) TYPE="MIGRATION" ;;
+        --migration) TYPE="MIGRATION" && SIGN_BUILDS=1 ;;
     esac
     shift
 done
