@@ -22,6 +22,7 @@ while [[ $# > 0 ]]; do
         -t|--tag) TAG=$2 ;;
         --type) TYPE=$2 ;;
         --sign-builds) SIGN_BUILDS=1 ;;
+        --migration) TYPE="MIGRATION" ;;
     esac
     shift
 done
@@ -47,6 +48,11 @@ fi
 repo sync
 source build/envsetup.sh
 
+# Set up migration build
+if [ $TYPE == "MIGRATION" ]; then
+    repopick -f 156047 162144
+fi
+
 # The following code is in part from julianxhokaxhiu/docker-lineage-cicd
 IFS=','
 for codename in $DEVICE_LIST; do
@@ -71,3 +77,12 @@ for codename in $DEVICE_LIST; do
         /usr/bin/make clean
     fi
 done
+
+if [ $TYPE == "MIGRATION" ]; then
+    cd vendor/cm
+    git reset --hard github/cm-$TAG
+    croot
+    cd frameworks/base
+    git reset --hard github/cm-$TAG
+    croot
+fi
