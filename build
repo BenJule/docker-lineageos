@@ -11,6 +11,8 @@ CCACHE_SIZE="75G"
 TAG=14.1
 TYPE="WEEKLY"
 SIGN_BUILDS=0
+NAME=
+EMAIL=
 
 while [[ $# > 0 ]]; do
     key="$1"
@@ -23,10 +25,15 @@ while [[ $# > 0 ]]; do
         --type) TYPE=$2 ;;
         --sign-builds) SIGN_BUILDS=1 ;;
         --migration) TYPE="MIGRATION" && SIGN_BUILDS=1 ;;
+        --name) NAME=$2 ;;
+        --email) EMAIL=$2 ;;
     esac
     shift
 done
 
+# Set Name and Email
+git config --global user.email $EMAIL
+git config --global user.name $NAME
 # Allocate RAM to jack
 export ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx$JACK_RAM"
 
