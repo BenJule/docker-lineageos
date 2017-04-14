@@ -26,6 +26,8 @@ while [[ $# > 0 ]]; do
     shift
 done
 
+echo $SIGN_BUILDS
+
 # Allocate RAM to jack
 ANDROID_JACK_VM_ARGS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx$JACK_RAM"
 
