@@ -67,6 +67,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
 
 # Add startup script
     chmod a+x /bin/build && \
+    chmod a+x /bin/migration && \
 
 # Fix ownership
     chown -R build:build /build
