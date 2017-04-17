@@ -5,7 +5,9 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC"
 
 # Add binaries
-ADD build /bin/build
+ADD build.sh /bin/build
+ADD migration.sh /bin/migration
+ADD migration /build/migration
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     apt-get -qq update && \
