@@ -57,7 +57,29 @@ source build/envsetup.sh
 
 # Set up migration build
 if [ $TYPE == "MIGRATION" ]; then
-    repopick -f 156047 162144
+    # Merge patch
+    repopick -f 156327
+    script_path="/build/android/vendor/cm/prebuilt/common/etc/keys-migration.sh"
+    
+    # Install and compile CertKeys
+    curl https://gist.githubusercontent.com/marceloneil/09076aff60aed88f1ecde8c9473b62f9/raw/c7bae631be5cf10d1c9315f019fe39457dc1215f/CertKeys.java > CertKeys.java
+    javac CertKeys.java
+
+    for i in media platform shared; do
+            cert_path="/build/android-certs/${i}.x509.pem"
+            cert_file="$(java CertKeys ${cert_path})"
+            key_file="$(openssl x509 -pubkey -noout -in ${cert_path} | grep -v '-' | tr -d '\n' | paste)"
+            sed -i "s#${i}_cert_release=.*#${i}_cert_release='${cert_file}'#g" $script_path
+            sed -i "s#${i}_key_release=.*#${i}_key_release='${key_file}'#g" $script_path
+    done
+
+    cert_path="/build/android-certs/releasekey.x509.pem"
+    cert_file="$(java CertKeys ${cert_path})"
+    key_file="$(openssl x509 -pubkey -noout -in ${cert_path} | grep -v '-' | tr -d '\n' | paste)"
+    sed -i "s#release_cert=.*#release_cert='${cert_file}'#g" $script_path
+    sed -i "s#release_key=.*#release_key='${key_file}'#g" $script_path
+
+    rm CertKeys.* # Clean up
 fi
 
 # The following code is in part from julianxhokaxhiu/docker-lineage-cicd
@@ -87,9 +109,6 @@ done
 
 if [ $TYPE == "MIGRATION" ]; then
     cd vendor/cm
-    git reset --hard github/cm-$TAG
-    croot
-    cd frameworks/base
-    git reset --hard github/cm-$TAG
+    git reset --hard
     croot
 fi
