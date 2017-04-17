@@ -1,4 +1,4 @@
-script_path="/build/migration/META-INF/com/google/android/update-script"
+script_path="/build/migration/META-INF/com/google/android/update-binary"
 cd /build/migration
 javac CertKeys.java
 
