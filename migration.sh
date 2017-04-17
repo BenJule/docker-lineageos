@@ -16,8 +16,9 @@ key_file="$(openssl x509 -pubkey -noout -in ${cert_path} | grep -v '-' | tr -d '
 sed -i "s#release_cert=.*#release_cert='${cert_file}'#g" $script_path
 sed -i "s#release_key=.*#release_key='${key_file}'#g" $script_path
 
-zip -r9 /tmp/migration.zip /build/migration/META-INF
-java -jar /build/android/prebuilts/sdk/tools/lib/signapk.jar \
+zip -r9 /tmp/migration.zip META-INF
+java -Djava.library.path=/build/android/prebuilts/sdk/tools/linux/lib64/ \
+    -jar /build/android/prebuilts/sdk/tools/lib/signapk.jar \
     /build/android-certs/releasekey.x509.pem \
     /build/android-certs/releasekey.pk8 \
     /tmp/migration.zip \
