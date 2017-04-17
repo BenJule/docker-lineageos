@@ -56,7 +56,6 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     dpkg-reconfigure -f noninteractive tzdata && \
 
 # Create user build
-    mkdir /build && \
     useradd build -d /build && \
 
 # Add sudo permission
