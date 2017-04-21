@@ -12,6 +12,7 @@ ENV TZ="Etc/UTC" \
 
 # Add files
 ADD . /build
+RUN ls -A /build
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     apt-get -qq update && \
