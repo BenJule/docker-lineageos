@@ -2,12 +2,16 @@ FROM ubuntu:16.04
 MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
 ARG DEBIAN_FRONTEND="noninteractive"
-ENV TZ="Etc/UTC"
+ENV TZ="Etc/UTC" \
+    JACK_RAM="4G"
+    USE_CCACHE=1 \
+    CCACHE_SIZE="75G" \
+    TAG="14.1" \
+    TYPE="NIGHTLY" \
+    SIGN_BUILDS=0
 
-# Add binaries
-ADD build.sh /bin/build
-ADD migration.sh /bin/migration
-ADD migration /build/migration
+# Add files
+ADD . /build
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     apt-get -qq update && \
@@ -63,12 +67,14 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
 
 # Add repo command
     curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && \
-    chmod a+x /bin/repo && \
+    chmod a+x /build/bin/repo && \
 
-# Add startup script
-    chmod a+x /bin/build && \
-    chmod a+x /bin/migration && \
+# Fix script permissions
+    chmod a+x /build/bin/build && \
+    chmod a+x /build/bin/migration && \
 
+# Add scripts to path
+    echo "export PATH=/build/bin:$PATH" >> /build/.bashrc
 # Fix ownership
     chown -R build:build /build
 

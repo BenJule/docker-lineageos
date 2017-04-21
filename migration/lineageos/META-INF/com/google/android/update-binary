@@ -51,6 +51,6 @@ echo "ui_print" > $OUTFD
 chmod 660 $PACKAGES
 chown system:system $PACKAGES
 
-echo "ui_print File updating complete. Flash an officially signed LineageOS build now!" > $OUTFD
+echo "ui_print File updating complete. Flash a signed build now!" > $OUTFD
 echo "ui_print" > $OUTFD
 exit 0

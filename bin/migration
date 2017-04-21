@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Path to scripts
+script_paths="/build/migration/lineageos/META-INF/com/google/android/update-binary" \
+            "/build/migration/cyanogenmod/META-INF/com/google/android/update-binary"
+
+# Compile java
+cd /build/migration
+javac CertKeys.java
+
+# Replace certs/keys
+for script_path in $script_paths; do
+    for i in media platform shared; do
+            cert_path="/build/android-certs/${i}.x509.pem"
+            cert_file="$(java CertKeys ${cert_path})"
+            key_file="$(openssl x509 -pubkey -noout -in ${cert_path} | grep -v '-' | tr -d '\n' | paste)"
+            sed -i "s#${i}_cert_release=.*#${i}_cert_release='${cert_file}'#g" $script_path
+            sed -i "s#${i}_key_release=.*#${i}_key_release='${key_file}'#g" $script_path
+    done
+
+    cert_path="/build/android-certs/releasekey.x509.pem"
+    cert_file="$(java CertKeys ${cert_path})"
+    key_file="$(openssl x509 -pubkey -noout -in ${cert_path} | grep -v '-' | tr -d '\n' | paste)"
+    sed -i "s#release_cert=.*#release_cert='${cert_file}'#g" $script_path
+    sed -i "s#release_key=.*#release_key='${key_file}'#g" $script_path
+done
+
+for type in lineageos cyanogenmod; do
+    # Zip migration script
+    cd /build/migration/${type}
+    zip -r9 /tmp/${type}-migration.zip META-INF
+    # Sign zip
+    java -Djava.library.path=/build/android/prebuilts/sdk/tools/linux/lib64/ \
+        -jar /build/android/prebuilts/sdk/tools/lib/signapk.jar \
+        /build/android-certs/releasekey.x509.pem \
+        /build/android-certs/releasekey.pk8 \
+        /tmp/${type}-migration.zip \
+        /build/zips/${type}-migration-signed.zip
+    # Delete Temp zip
+    rm /tmp/${type}-migration.zip
+done
+
+# Clean up
+rm CertKeys.class
