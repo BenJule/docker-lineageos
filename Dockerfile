@@ -3,7 +3,7 @@ MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC" \
-    JACK_RAM="4G"
+    JACK_RAM="4G" \
     USE_CCACHE=1 \
     CCACHE_SIZE="75G" \
     TAG="14.1" \
