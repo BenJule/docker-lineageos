@@ -12,7 +12,6 @@ ENV TZ="Etc/UTC" \
 
 # Add files
 ADD . /build
-RUN ls -A /build
 
 RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     apt-get -qq update && \
@@ -67,7 +66,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     echo "build ALL=NOPASSWD: ALL" > /etc/sudoers.d/build && \
 
 # Add repo command
-    curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && \
+    curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /build/bin/repo && \
     chmod a+x /build/bin/repo && \
 
 # Fix script permissions
