@@ -74,7 +74,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     chmod a+x /build/bin/migration && \
 
 # Add scripts to path
-    echo "export PATH=/build/bin:$PATH" >> /build/.bashrc
+    echo "export PATH=/build/bin:$PATH" >> /build/.bashrc && \
 # Fix ownership
     chown -R build:build /build
 
