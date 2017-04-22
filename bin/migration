@@ -43,4 +43,4 @@ for type in lineageos cyanogenmod; do
 done
 
 # Clean up
-rm CertKeys.class
+rm /build/migration/CertKeys.class
