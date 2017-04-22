@@ -1,15 +1,17 @@
 #!/bin/bash
 
 # Path to scripts
-script_paths="/build/migration/lineageos/META-INF/com/google/android/update-binary" \
-            "/build/migration/cyanogenmod/META-INF/com/google/android/update-binary"
+declare -a script_paths=(
+    "/build/migration/lineageos/META-INF/com/google/android/update-binary"
+    "/build/migration/cyanogenmod/META-INF/com/google/android/update-binary"
+)
 
 # Compile java
 cd /build/migration
 javac CertKeys.java
 
 # Replace certs/keys
-for script_path in $script_paths; do
+for script_path in "${script_paths[@]}"; do
     for i in media platform shared; do
             cert_path="/build/android-certs/${i}.x509.pem"
             cert_file="$(java CertKeys ${cert_path})"
