@@ -50,7 +50,7 @@ for codename in $DEVICE_LIST; do
                 out/dist/signed-target_files.zip \
                 /build/zips/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
         elif [ $SIGN_BUILDS == 0]; then
-            brunch oneplus3
+            brunch $codename
         fi
         /usr/bin/make clean
     fi
