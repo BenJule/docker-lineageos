@@ -10,55 +10,85 @@ The main working directory is a shared folder on the host system, so the Docker 
 
 **NOTE:** Remember that LineageOS is a huge project. It will consume a large amount of disk space (~80 GB) and it can easily take hours to build.
 
-### How to run/build
+### How to pull
 
 **NOTES:**
 * You will need to [install Docker][Docker_Installation] to proceed!
 * If an image does not exist, ```docker build``` is executed first
 
 ```
-git clone https://github.com/stucki/docker-lineageos.git
-cd docker-lineageos
-./run.sh
+docker pull marceloneil/docker-lineageos
 ```
 
-The `run.sh` script accepts the following switches:
-
-* -u|--enable-usb - runs the container in privileged mode (this way you can use adb right from the container)
-* -r|--rebuild - force rebuild the image from scratch
-
-The container uses "screen" to run the shell. This means that you will be able to open additional shells using [screen keyboard shortcuts][Screen_Shortcuts].
-
-### How to build LineageOS for your device
+### Create migration zips
 
 ```
-repo init -u git://github.com/lineageos/android.git -b cm-14.1
-repo sync -c -j 16
-source build/envsetup.sh
-breakfast <device codename>   # example: breakfast grouper
-brunch <device codename>      # example: brunch grouper
+docker run \
+    --rm \
+    -v </path/to/ccache>:/srv/ccache \
+    -v </path/to/android>:/build/android \
+    -v </path/to/zips>:/build/zips \
+    -v </path/to/android-certs>:/build/android-certs \
+    marceloneil/docker-lineageos \
+    migration
 ```
 
-### Links
+### Build android
 
-For further information, check the following links:
+#### Default build
+```
+docker run -d \
+    --name lineageos-build \
+    -e DEVICE_LIST="<device1,device2>" \
+    -e NAME="<git name>" \
+    -e EMAIL="<git email"> \
+    -v </path/to/ccache>:/srv/ccache \
+    -v </path/to/android>:/build/android \
+    -v </path/to/zips>:/build/zips \
+    -v </path/to/android-certs>:/build/android-certs \
+    marceloneil/docker-lineageos 
+```
 
-* [CyanogenMod Building Basics][Cyanogenmod_Building_Basics]
-* [Learning to Build CyanogenMod][Learning_to_Build_CM]
-* [Build Instructions for Google Nexus 5][CyanogenMod_Build_Nexus5] (example device, search the wiki for other devices)
+#### Signed build
+```
+docker run -d \
+    --name lineageos-build \
+    -e DEVICE_LIST="<device1,device2>" \
+    -e SIGN_BUILD=1 \
+    -e NAME="<git name>" \
+    -e EMAIL="<git email"> \
+    -v </path/to/ccache>:/srv/ccache \
+    -v </path/to/android>:/build/android \
+    -v </path/to/zips>:/build/zips \
+    -v </path/to/android-certs>:/build/android-certs \
+    marceloneil/docker-lineageos 
+```
 
-### More information
+#### All options
+```
+docker run -d \
+    --name lineageos-build \
+    -e DEVICE_LIST="<device1,device2>" \
+    -e TZ="<timezone>" \ # Default is Etc/UTC
+    -e JACK_RAM="<ram to allocate>" \ # Default is 4G
+    -e USE_CCACHE=<0/1> \ # Default is 1
+    -e CCACHE_SIZE="<size to allocate>" \ # Default is 75G
+    -e TAG="<lineageos version>" \ # Default is 14.1
+    -e TYPE="<build label>" \ # Default is NIGHTLY
+    -e SIGN_BUILDS=<0/1> \ # Default is 0
+    -e NAME="<git name>" \
+    -e EMAIL="<git email"> \
+    -v </path/to/ccache>:/srv/ccache \
+    -v </path/to/android>:/build/android \
+    -v </path/to/zips>:/build/zips \
+    -v </path/to/android-certs>:/build/android-certs \
+    marceloneil/docker-lineageos 
+```
 
-* [Discussion thread @ XDA developers]
-
+Then simply run `docker start lineageos-build` to rebuild
+    
 ==================
 
-[Docker]:                      https://www.docker.io/
-[LineageOS]:                   http://lineageos.org/
-[Docker_Installation]:         https://www.docker.io/gettingstarted/
-[Screen_Shortcuts]:            http://www.pixelbeat.org/lkdb/screen.html
-[CyanogenMod_Building_Basics]: http://wiki.cyanogenmod.org/w/Doc:_Building_Basics
-[Learning_to_Build_CM]:        http://wiki.cyanogenmod.org/w/Development#Learning_To_Build_CM
-[CyanogenMod_Build_Nexus5]:    http://wiki.cyanogenmod.org/w/Build_for_hammerhead
-[Discussion thread @ XDA developers]: http://forum.xda-developers.com/showthread.php?t=2650345
-[dotcloud/docker#2224]:        https://github.com/dotcloud/docker/issues/2224
+[Docker]:                      https://www.docker.com/
+[LineageOS]:                   https://www.lineageos.org/
+[Docker_Installation]:         https://www.docker.com/get-docker
