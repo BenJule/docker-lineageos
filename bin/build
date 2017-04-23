@@ -40,7 +40,6 @@ for codename in $DEVICE_LIST; do
         breakfast $codename
         if [ $SIGN_BUILDS == 1 ]; then
             mka target-files-package dist
-            croot
             ./build/tools/releasetools/sign_target_files_apks -o \
                 -d /build/android-certs \
                 out/dist/*-target_files-*.zip \
@@ -51,7 +50,6 @@ for codename in $DEVICE_LIST; do
                 out/dist/signed-target_files.zip \
                 /build/zips/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
         elif [ $SIGN_BUILDS == 0]; then
-            croot
             brunch oneplus3
         fi
         /usr/bin/make clean
