@@ -3,6 +3,7 @@ MAINTAINER Marcel O'Neil <marcel@marceloneil.com>
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC" \
+    USER="build" \
     JACK_RAM="4G" \
     USE_CCACHE=1 \
     CCACHE_SIZE="75G" \
@@ -74,7 +75,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     chmod a+x /build/bin/migration && \
 
 # Add scripts to path
-    echo "export PATH=/build/bin:$PATH" >> /build/.bashrc && \
+    echo "export PATH=/build/bin:$PATH" >> /etc/bash.bashrc && \
 # Fix ownership
     chown -R build:build /build
 
