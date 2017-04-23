@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Assign user
-export USER="build"
-
 if [ -z "$DEVICE_LIST" ]; then
     echo "Error: No device specified"
     exit 1
