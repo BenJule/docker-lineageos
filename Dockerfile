@@ -9,7 +9,8 @@ ENV TZ="Etc/UTC" \
     CCACHE_SIZE="75G" \
     TAG="14.1" \
     TYPE="NIGHTLY" \
-    SIGN_BUILDS=0
+    SIGN_BUILDS=0 \
+    PATH=/build/bin:$PATH 
 
 # Add files
 ADD . /build
@@ -74,8 +75,6 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     chmod a+x /build/bin/build && \
     chmod a+x /build/bin/migration && \
 
-# Add scripts to path
-    echo "export PATH=/build/bin:$PATH" >> /etc/bash.bashrc && \
 # Fix ownership
     chown -R build:build /build
 
