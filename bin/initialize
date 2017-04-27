@@ -25,8 +25,8 @@ IFS=','
 for codename in $DEVICE_LIST; do
     if [ ! -z "$codename" ]; then
         breakfast $codename
-        adb start-server
-        bash "$(find device/ -name $codename)/extract-files.sh"
+        sudo adb start-server
+        sudo bash "$(find device/ -name $codename)/extract-files.sh"
         /usr/bin/make clean
     fi
 done
