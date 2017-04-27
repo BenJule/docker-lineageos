@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -z "$NAME" ] || [ -z "$EMAIL" ]; then
+    echo "Warn: Name/Email not provided"
+else
+    git config --global user.name $NAME
+    git config --global user.email $EMAIL
+fi
+
+# Initialize repository if needed
+if [ ! "$(ls -A)" ]; then
+    repo init -u https://github.com/LineageOS/android.git -b cm-$TAG
+fi
+
+repo sync
+source build/envsetup.sh
+
+# The following code is in part from julianxhokaxhiu/docker-lineage-cicd
+IFS=','
+for codename in $DEVICE_LIST; do
+    if [ ! -z "$codename" ]; then
+        breakfast $codename
+        printenv
+        /usr/bin/make clean
+    fi
+done
