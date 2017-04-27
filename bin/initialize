@@ -20,7 +20,8 @@ IFS=','
 for codename in $DEVICE_LIST; do
     if [ ! -z "$codename" ]; then
         breakfast $codename
-        printenv
+        cd $(find device/ -name $codename)
+        pwd
         /usr/bin/make clean
     fi
 done
