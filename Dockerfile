@@ -73,6 +73,7 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
 
 # Fix script permissions
     chmod a+x /build/bin/build && \
+    chmod a+x /build/bin/initialize && \
     chmod a+x /build/bin/migration && \
 
 # Fix ownership

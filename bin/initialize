@@ -12,6 +12,11 @@ if [ ! "$(ls -A)" ]; then
     repo init -u https://github.com/LineageOS/android.git -b cm-$TAG
 fi
 
+# Install adb
+curl https://dl.google.com/android/repository/platform-tools-latest-linux.zip > /build/platform-tools.zip
+unzip -j "/build/platform-tools.zip" "platform-tools/adb" -d "/build/bin"
+rm /build/platform-tools.zip
+
 repo sync
 source build/envsetup.sh
 
@@ -20,8 +25,8 @@ IFS=','
 for codename in $DEVICE_LIST; do
     if [ ! -z "$codename" ]; then
         breakfast $codename
-        cd $(find device/ -name $codename)
-        pwd
+        adb start-server
+        bash "$(find device/ -name $codename)/extract-files.sh"
         /usr/bin/make clean
     fi
 done
