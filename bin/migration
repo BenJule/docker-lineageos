@@ -3,7 +3,7 @@
 # Path to scripts
 declare -a script_paths=(
     "/build/migration/lineageos/META-INF/com/google/android/update-binary"
-    "/build/migration/lienageos-reverse/META-INF/com/google/android/update-binary"
+    "/build/migration/lineageos-reverse/META-INF/com/google/android/update-binary"
     "/build/migration/cyanogenmod/META-INF/com/google/android/update-binary"
     "/build/migration/cyanogenmod-reverse/META-INF/com/google/android/update-binary"
 )
