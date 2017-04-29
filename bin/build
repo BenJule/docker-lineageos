@@ -49,7 +49,7 @@ for codename in $DEVICE_LIST; do
                 --block --backup=true \
                 out/dist/signed-target_files.zip \
                 /build/zips/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
-        elif [ $SIGN_BUILDS == 0]; then
+        elif [ $SIGN_BUILDS == 0 ]; then
             brunch $codename
         fi
         /usr/bin/make clean
