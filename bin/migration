@@ -3,7 +3,9 @@
 # Path to scripts
 declare -a script_paths=(
     "/build/migration/lineageos/META-INF/com/google/android/update-binary"
+    "/build/migration/lienageos-reverse/META-INF/com/google/android/update-binary"
     "/build/migration/cyanogenmod/META-INF/com/google/android/update-binary"
+    "/build/migration/cyanogenmod-reverse/META-INF/com/google/android/update-binary"
 )
 
 # Compile java
@@ -27,7 +29,7 @@ for script_path in "${script_paths[@]}"; do
     sed -i "s#release_key=.*#release_key='${key_file}'#g" $script_path
 done
 
-for type in lineageos cyanogenmod; do
+for type in lineageos lineageos-reverse cyanogenmod cyanogenmod-reverse; do
     # Zip migration script
     cd /build/migration/${type}
     zip -r9 /tmp/${type}-migration.zip META-INF
