@@ -30,6 +30,11 @@ if [ ! "$(ls -A)" ]; then
     repo init -u https://github.com/LineageOS/android.git -b cm-$TAG
 fi
 
+# Check to see if builds folder exists
+if [ ! -d "/build/zips/builds" ]; then
+    mkdir /build/zips/builds
+fi
+
 repo sync
 source build/envsetup.sh
 
@@ -48,7 +53,7 @@ for codename in $DEVICE_LIST; do
                 -k /build/android-certs/releasekey \
                 --block --backup=true \
                 out/dist/signed-target_files.zip \
-                /build/zips/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
+                /build/zips/builds/lineage-$TAG-"$(date +%Y%m%d)"-$TYPE-$codename.zip
         elif [ $SIGN_BUILDS == 0 ]; then
             brunch $codename
         fi

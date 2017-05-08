@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Check if migration folder exists
+if [ ! -d  "/build/zips/migration" ]; then
+    mkdir /build/zips/migration
+fi
+
 # Path to scripts
 declare -a script_paths=(
     "/build/migration/lineageos/META-INF/com/google/android/update-binary"
@@ -39,7 +44,7 @@ for type in lineageos lineageos-reverse cyanogenmod cyanogenmod-reverse; do
         /build/android-certs/releasekey.x509.pem \
         /build/android-certs/releasekey.pk8 \
         /tmp/${type}-migration.zip \
-        /build/zips/${type}-migration-signed.zip
+        /build/zips/migration/${type}-migration-signed.zip
     # Delete Temp zip
     rm /tmp/${type}-migration.zip
 done
