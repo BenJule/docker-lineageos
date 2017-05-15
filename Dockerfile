@@ -79,8 +79,6 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
 # Fix ownership
     chown -R build:build /build
 
-VOLUME ["/build/android", "/build/zips", "/build/android-certs", "/srv/ccache"]
-
 CMD build
 USER build
 WORKDIR /build/android
