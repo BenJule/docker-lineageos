@@ -76,6 +76,9 @@ RUN sed -i 's/main$/main universe/' /etc/apt/sources.list && \
     chmod a+x /build/bin/initialize && \
     chmod a+x /build/bin/migration && \
 
+# Create Directories
+    mkdir /build/android && \
+
 # Fix ownership
     chown -R build:build /build
 
